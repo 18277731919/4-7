@@ -1,0 +1,153 @@
+#include<stdio.h>
+
+#include<stdlib.h>
+
+ 
+
+int n,m;
+
+int **arr;
+
+int *a;
+
+int minlength=100000,templength;
+
+int left,right;
+
+int *opt;
+
+ 
+
+int dfs(int t){
+
+	int i,j,temp;
+
+	if(t==n){
+
+		templength = 0;
+
+		for(i=0;i<m;i++){
+
+			for(j=0;j<n;j++){
+
+				if(arr[a[j]][i] == 1){
+
+					left = j;
+
+					break; 
+
+				}
+
+			}
+
+			for(j=n-1;j>=0;j--){
+
+				if(arr[a[j]][i] == 1){
+
+					right = j;
+
+					break; 
+
+				}
+
+			}
+
+		    if(templength < right-left){
+
+			    templength = right - left;
+
+		    }
+
+		}
+
+		if(minlength>templength){
+
+			minlength = templength;
+
+			for(i=0;i<n;i++){
+
+				opt[i] = a[i] + 1;
+
+			}
+
+		}
+
+		
+
+	}
+
+	
+
+	for(i=t;i<n;i++){
+
+		temp = a[i];
+
+		a[i] = a[t];
+
+		a[t] = temp;
+
+		dfs(t+1);
+
+		temp = a[i];
+
+		a[i] = a[t];
+
+		a[t] = temp;
+
+	}
+
+	return 0;
+
+}
+
+ 
+
+ 
+
+int main(){
+
+	scanf("%d%d",&n,&m);
+
+	a = (int*)malloc(n*sizeof(int));
+
+	opt = (int*)malloc(n*sizeof(int));
+
+	arr = (int **) malloc(n*sizeof(int *));//申请一组一维指针空间。
+
+    for(int i = 0; i < n; i ++)
+
+        arr[i] = (int *)malloc(m*sizeof(int)); //对于每个一维指针，申请一行数据的空间。
+
+    for(i=0;i<n;i++){
+
+    	a[i] = i;
+
+	}
+
+	for(i=0;i<n;i++){
+
+		for(int j=0;j<m;j++){
+
+			scanf("%d",&arr[i][j]);
+
+		}
+
+	}
+
+	
+
+	dfs(0);
+
+	printf("%d\n",minlength);
+
+	for(i=0;i<n;i++){
+
+		printf("%d",opt[i]);
+
+	}
+
+	
+
+	return 0;
+
+}
